@@ -34,6 +34,25 @@ public class Finder {
                 .keySet();
 
     }
+    /**
+     * Комментарии к рефакторингу
+     *
+     * Предыдущая реализация, на мой взгляд, не соответствует задаче, т.к. в список групп попадают группы,
+     * где хотя бы один участник выше целевого возраста, но задача стоит выбрать группы в которой участники
+     * старше целевого возраста, а не хотя бы один участник старше. Тем не менее на случай, если я неправильно
+     * поняла задачу, я реализовала второй метод findOneMemberOlderTarget, который возвращает список групп, в которых
+     * хотя бы один участник старше целевого возраста.
+     */
+
+    public Set<String> findOneMemberOlderTarget(List<MembersGroup> groups, int targetAge){
+        return groups
+                .stream()
+                .filter((membersGroup -> membersGroup.getMembers()
+                        .stream()
+                        .anyMatch(member -> member.getAge()>targetAge)))
+                .collect(Collectors.toMap(MembersGroup::getGroupName, MembersGroup::getMembers))
+                .keySet();
+    }
 
 
 }
